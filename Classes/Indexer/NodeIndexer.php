@@ -48,12 +48,19 @@ class NodeIndexer extends ContentRepositoryAdaptor\Indexer\NodeIndexer
     protected $enableLiveAsyncIndexing;
 
     /**
+     * @Flow\Inject
+     * @var ContentRepositoryAdaptor\Indexer\NodeIndexer
+     */
+    protected $nodeIndexer;
+
+    /**
      * @param NodeInterface $node
      * @param string|null $targetWorkspaceName In case indexing is triggered during publishing, a target workspace name will be passed in
      * @throws ContentRepositoryAdaptor\Exception
      */
     public function indexNode(NodeInterface $node, $targetWorkspaceName = null): void
     {
+        $this->indexNamePostfix = $this->nodeIndexer->indexNamePostfix;
         if( $node->isRemoved() ){
             $this->removeNode($node, $targetWorkspaceName);
             return;
@@ -88,6 +95,7 @@ class NodeIndexer extends ContentRepositoryAdaptor\Indexer\NodeIndexer
      */
     public function removeNode(NodeInterface $node, string $targetWorkspaceName = null): void
     {
+        $this->indexNamePostfix = $this->nodeIndexer->indexNamePostfix;
         if ($this->enableLiveAsyncIndexing !== true) {
             parent::removeNode($node, $targetWorkspaceName);
 
