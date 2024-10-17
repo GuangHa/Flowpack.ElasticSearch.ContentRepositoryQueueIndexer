@@ -60,7 +60,9 @@ class NodeIndexer extends ContentRepositoryAdaptor\Indexer\NodeIndexer
      */
     public function indexNode(NodeInterface $node, $targetWorkspaceName = null): void
     {
-        $this->indexNamePostfix = $this->nodeIndexer->indexNamePostfix;
+        if ($this->nodeIndexer && property_exists($this->nodeIndexer, 'indexNamePostfix')) {
+            $this->indexNamePostfix = $this->nodeIndexer->indexNamePostfix;
+        }
         if( $node->isRemoved() ){
             $this->removeNode($node, $targetWorkspaceName);
             return;
@@ -95,7 +97,9 @@ class NodeIndexer extends ContentRepositoryAdaptor\Indexer\NodeIndexer
      */
     public function removeNode(NodeInterface $node, string $targetWorkspaceName = null): void
     {
-        $this->indexNamePostfix = $this->nodeIndexer->indexNamePostfix;
+        if ($this->nodeIndexer && property_exists($this->nodeIndexer, 'indexNamePostfix')) {
+            $this->indexNamePostfix = $this->nodeIndexer->indexNamePostfix;
+        }
         if ($this->enableLiveAsyncIndexing !== true) {
             parent::removeNode($node, $targetWorkspaceName);
 
